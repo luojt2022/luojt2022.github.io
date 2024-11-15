@@ -14627,7 +14627,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>&emsp;&emsp;For this part, I instantiate DeepFloyd's <code>stage_1</code> and <code>stage_2</code> objects used for generation, as well as several text prompts for sample generation. To ensure that the generated images closely align with the textual descriptions, I experimented with various parameter settings, particularly adjusting num_inference_steps to observe changes in output quality. These trials helped me understand the model's ability to control image detail and refinement.</p>
-<p>&emsp;&emsp;The random seed that I'm using here is $7929$, and I would use the same seed all subsequent parts.</p>
+<p>&emsp;&emsp;The random seed that I'm using here is $42$, and I would use the same seed all subsequent parts.</p>
 <p>&emsp;&emsp;The text prompts used in this part are: <em>an oil painting of a snowy mountain village</em>, <em>a man wearing a hat</em> and <em>a rocket ship</em>. The corresponding generated images are as below:</p>
 <div style="text-align: center;">
     <h4 style="font-weight: bold;">Stage 1 with Size [3, 64, 64]</h4>
@@ -15744,7 +15744,7 @@ $$
 $$
 where UNet is the diffusion model UNet from before, $\textbf{flip}(\cdot)$ is a function that flips the image, and $p_{1}$ and $p_{2}$ are two different text prompt embeddings. And our final noise estimate is $\epsilon$.</p>
 <p>&emsp;&emsp;Here are some examples:</p>
-<p>&emsp;&emsp;In this image, you can see a person sitting by a campfire, but when it is flipped upside down, it transforms into an old man with a white beard.</p>
+<p>&emsp;&emsp;In this image, you can see some people sitting by a campfire, but when it is flipped upside down, it transforms into an old man.</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
         <img src="./media/A1/flip_campfire_man.png" alt="Image 1" style="width: 150px;">
@@ -15760,7 +15760,7 @@ where UNet is the diffusion model UNet from before, $\textbf{flip}(\cdot)$ is a 
     <div style="text-align: center;">
         <p style="font-weight: bold;">An Oil Painting of an Old Man</p>
     </div>
-</div><p>&emsp;&emsp;I got this pair of images using <code>"a photo of the amalfi cost"</code> and <code>"an oil painting of a snowy mountain village"</code>. In the image on the left, you can see the beautiful Amalfi Coast from afar, with the reflection of the coastline in the water. When flipped, it reveals a snowy mountain with small villages scattered among the peaks.</p>
+</div><p>&emsp;&emsp;I got this pair of images using <code>"a photo of the amalfi cost"</code> and <code>"an oil painting of a snowy mountain village"</code>. In the image on the left, you can see the beautiful Amalfi Coast. When flipped, it reveals a snowy mountain with villages afar.</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
         <img src="./media/A1/flip_cost_village.png" alt="Image 1" style="width: 150px;">
@@ -15776,7 +15776,7 @@ where UNet is the diffusion model UNet from before, $\textbf{flip}(\cdot)$ is a 
     <div style="text-align: center;">
         <p style="font-weight: bold;">An Oil Painting of a Snowy Mountain Village</p>
     </div>
-</div><p>&emsp;&emsp;These images are generated from <code>"a photo of a man"</code> and <code>"a photo of a dog"</code>. In this image, there is a self-portrait of a melancholy man; when flipped, it transforms into a fierce, one-eyed black dog.</p>
+</div><p>&emsp;&emsp;These images are generated from <code>"a photo of a man"</code> and <code>"a photo of a dog"</code>. In this image, there is a self-portrait of a serious man; when flipped, it transforms into a cute Beagle dog.</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
         <img src="./media/A1/flip_man_dog.png" alt="Image 1" style="width: 150px;">
@@ -15823,16 +15823,16 @@ $$$$
 $$$$
     \epsilon = f_{\text{lowpass}}(\epsilon_{1}) + f_{\text{highpass}}(\epsilon_{2})
 $$<p>where UNet is the diffusion model UNet, $f_{\text{lowpass}}$ is a low pass function, $f_{\text{highpass}}$ is a high pass function, and $p_{1}$ and $p_{2}$ are two different text prompt embeddings. Our final noise estimate is $\epsilon$. For the low-pass and high-pass filters, I simply apply a Gaussian blur with a kernel size of $33$ and a sigma of $2$.</p>
-<p>&emsp;&emsp;Here are some of my examples. We could see waterfalls, two man sitting by the campfire and a snowy village in the forest in the images below.</p>
+<p>&emsp;&emsp;Here are some of my examples. We could see waterfalls, two man sitting by the campfire and a snowy village in the images below.</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
-        <img src="./media/A1/hybrid_waterfall_skull.png" alt="Image 1" style="width: 150px;">
+        <img src="./media/A1/hybrid_waterfall_skull.png" alt="Image 1" style="width: 200px;">
     </div>
     <div style="text-align: center;">
-        <img src="./media/A1/hybrid_campfire_man.png" alt="Image 2" style="width: 150px;">
+        <img src="./media/A1/hybrid_campfire_man.png" alt="Image 2" style="width: 200px;">
     </div>
     <div style="text-align: center;">
-        <img src="./media/A1/hybrid_hat_village.png" alt="Image 3" style="width: 150px;">
+        <img src="./media/A1/hybrid_dog_village.png" alt="Image 3" style="width: 200px;">
     </div>
 </div>
 <div style="display: flex; justify-content: space-around; align-items: center;">
@@ -15845,7 +15845,7 @@ $$<p>where UNet is the diffusion model UNet, $f_{\text{lowpass}}$ is a low pass 
     <div style="text-align: center;">
         <p style="font-weight: bold;">An Oil Painting of a Snowy Mountain Village</p>
     </div>
-</div><p>&emsp;&emsp;Scale them down to simulate the scene as if viewed from a distance. Now we could find a skull, a smily man and a cool guy wearing a hat.</p>
+</div><p>&emsp;&emsp;Scale them down to simulate the scene as if viewed from a distance. Now we could find a skull, an old man with white beards and a dog.</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
         <img src="./media/A1/hybrid_waterfall_skull.png" alt="Image 1" style="width: 35px;">
@@ -15854,7 +15854,7 @@ $$<p>where UNet is the diffusion model UNet, $f_{\text{lowpass}}$ is a low pass 
         <img src="./media/A1/hybrid_campfire_man.png" alt="Image 2" style="width: 35px;">
     </div>
     <div style="text-align: center;">
-        <img src="./media/A1/hybrid_hat_village.png" alt="Image 3" style="width: 35px;">
+        <img src="./media/A1/hybrid_dog_village.png" alt="Image 3" style="width: 35px;">
     </div>
 </div>
 <div style="display: flex; justify-content: space-around; align-items: center;">
