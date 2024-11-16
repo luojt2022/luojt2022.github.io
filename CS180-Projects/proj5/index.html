@@ -15865,7 +15865,7 @@ $$<p>where UNet is the diffusion model UNet, $f_{\text{lowpass}}$ is a low pass 
         <p style="font-weight: bold;">An Oil Painting of an Old Man</p>
     </div>
     <div style="text-align: center;">
-        <p style="font-weight: bold;">A Man Wearing a Hat</p>
+        <p style="font-weight: bold;">A Photo of a Dog</p>
     </div>
 </div>
 </div>
@@ -16236,25 +16236,25 @@ $$</p>
 </div><p>&emsp;&emsp;Here are some sampling results for the time-conditioned UNet:</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
-        <img src="./media/B2/tc_sample1.gif" alt="Image 1" style="width: 300px;">
+        <img src="./media/B2/tc_sample1.png" alt="Image 1" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 1</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/tc_sample5.gif" alt="Image 2" style="width: 300px;">
+        <img src="./media/B2/tc_sample5.png" alt="Image 2" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 5</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/tc_sample10.gif" alt="Image 3" style="width: 300px;">
+        <img src="./media/B2/tc_sample10.png" alt="Image 3" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 10</p>
     </div>
 </div>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
-        <img src="./media/B2/tc_sample15.gif" alt="Image 1" style="width: 300px;">
+        <img src="./media/B2/tc_sample15.png" alt="Image 1" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 15</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/tc_sample20.gif" alt="Image 2" style="width: 300px;">
+        <img src="./media/B2/tc_sample20.png" alt="Image 2" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 20</p>
     </div>
 </div>
@@ -16340,28 +16340,43 @@ $$</p>
 </div><p>&emsp;&emsp;Here are some sampling results for the class-conditioned UNet where I use classifier-free guidance with $\gamma = 5.0$:</p>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
-        <img src="./media/B2/cc_sample1.gif" alt="Image 1" style="width: 300px;">
+        <img src="./media/B2/cc_sample1.png" alt="Image 1" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 1</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/cc_sample5.gif" alt="Image 2" style="width: 300px;">
+        <img src="./media/B2/cc_sample5.png" alt="Image 2" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 5</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/cc_sample10.gif" alt="Image 3" style="width: 300px;">
+        <img src="./media/B2/cc_sample10.png" alt="Image 3" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 10</p>
     </div>
 </div>
 <div style="display: flex; justify-content: space-around; align-items: center;">
     <div style="text-align: center;">
-        <img src="./media/B2/cc_sample15.gif" alt="Image 1" style="width: 300px;">
+        <img src="./media/B2/cc_sample15.png" alt="Image 1" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 15</p>
     </div>
     <div style="text-align: center;">
-        <img src="./media/B2/cc_sample20.gif" alt="Image 2" style="width: 300px;">
+        <img src="./media/B2/cc_sample20.png" alt="Image 2" style="width: 300px;">
         <p style="font-weight: bold;">Epoch 20</p>
     </div>
-</div>
+</div><p>&emsp;&emsp;I was also curious about the influence of guidance scale, so I tried <code>guidance_scale = [0, 5, 10]</code>,</p>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div style="text-align: center;">
+        <img src="./media/B2/guidance_scale0.png" alt="Image 1" style="width: 300px;">
+        <p style="font-weight: bold;">guidance_scale = 0</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/guidance_scale5.png" alt="Image 2" style="width: 300px;">
+        <p style="font-weight: bold;">guidance_scale = 5</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/guidance_scale10.png" alt="Image 3" style="width: 300px;">
+        <p style="font-weight: bold;">guidance_scale = 10</p>
+    </div>
+</div><p>&emsp;&emsp;We could find that <code>guidance_scale = 5</code> performs best, while <code>guidance_scale = 0</code> provides strange digits and <code>guidance_scale = 10</code> emphasizes the characteristic features too much.</p>
+
 </div>
 </div>
 </div>
@@ -16386,7 +16401,55 @@ $$</p>
 <ul>
 <li><strong>Sampling Gifs</strong>: I create my own sampling gifs as the course website shown, so please refer to my website:)</li>
 </ul>
-
+<p>&emsp;&emsp;Here are some sampling result gifs for the time-conditioned UNet:</p>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div style="text-align: center;">
+        <img src="./media/B2/tc_sample1.gif" alt="Image 1" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 1</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/tc_sample5.gif" alt="Image 2" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 5</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/tc_sample10.gif" alt="Image 3" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 10</p>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div style="text-align: center;">
+        <img src="./media/B2/tc_sample15.gif" alt="Image 1" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 15</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/tc_sample20.gif" alt="Image 2" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 20</p>
+    </div>
+</div><p>&emsp;&emsp;The sampling result gifs for the class-conditioned UNet with $\gamma = 5.0$ are as follows:</p>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div style="text-align: center;">
+        <img src="./media/B2/cc_sample1.gif" alt="Image 1" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 1</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/cc_sample5.gif" alt="Image 2" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 5</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/cc_sample10.gif" alt="Image 3" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 10</p>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div style="text-align: center;">
+        <img src="./media/B2/cc_sample15.gif" alt="Image 1" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 15</p>
+    </div>
+    <div style="text-align: center;">
+        <img src="./media/B2/cc_sample20.gif" alt="Image 2" style="width: 300px;">
+        <p style="font-weight: bold;">Epoch 20</p>
+    </div>
+</div>
 </div>
 </div>
 </div>
