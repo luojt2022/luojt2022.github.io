@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Gradient Domain Fusion</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61847430-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-61847430-3');
+    </script>
+    <!-- MathJax Library -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata:700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body { font-family: 'Helvetica', 'Arial', sans-serif; }
+        code { font-family: 'Inconsolata', monospace; }
+
+        body { 
+            margin: 0px; 
+            padding: 0px; 
+            font-size: 96%; 
+        }
+        p { margin-top: 0px; }
+        img { max-width: 100%; }
+
+        a { 
+            color: inherit;
+            text-decoration: none;
+        }
+        #content a, #content [data-tooltip] { color: #688BA8; }
+        a:hover { color: #A8C5DB !important; }
+
+        #title {
+            font-weight: bold; 
+            font-size: 0.8em; 
+            letter-spacing: 0.08em; 
+            text-transform: uppercase;
+        }
+        #title p { margin: 0; padding: 0; }
+        #title a {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        #title span.nav-group-label { color: #A8A8A8; }
+        #title span:after {
+            color: #A8A8A8;
+            content: '\00a0\2022\00a0';
+        }
+        #title a.nav-selected { color: #A8C5DB; }
+        #title-bottom { margin-top: 0.5em; }
+
+        #title, #content { 
+            margin: 20px; 
+            overflow: hidden; 
+        }
+        @media ( min-width: 500px ) {
+            #container {
+                max-width: 600px;
+                vertical-align: middle;
+                margin: auto;
+            }
+            #title-left { float: left; }
+            #title-right { 
+                float: right; 
+                text-align: right; 
+            }
+            #title-bottom, #title-bottom p { 
+                float: left;
+                clear: left;
+            }
+        }
+        @media ( max-width: 499px ) {
+            #title, #content { margin: 10px; }
+            #container { min-width: 200px; }
+            #title-left { text-align: center; }
+        }
+
+        #tooltip { 
+            position: absolute;
+            box-sizing: border-box;
+            display: none;
+            pointer-events: none;
+            background-color: #A8C5DB;
+            padding: 3px;
+            padding-right: 6px;
+            padding-left: 6px;
+        }
+
+        h1 { 
+            font-weight: bold; 
+            font-size: 1.3em; 
+            letter-spacing: 0.08em; 
+            text-transform: uppercase;
+            margin-top: 1.5em;
+            margin-bottom: 0.6em;
+        }
+
+        h2 { 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            letter-spacing: 0.08em; 
+            text-transform: uppercase;
+            margin-top: 1.5em;
+            margin-bottom: 0.6em;
+        }
+
+        h3 { 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            margin-top: 1.2em;
+            margin-bottom: 0.6em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="content">
+            <div style="text-align: center;">
+                <h1 style="font-style: italic;">Gradient Domain Fushion</h1>
+            </div>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                <img src="./media/blend2.png" width="480">
+                </figure>
+            </figure>
+            <h2>Overview</h2>
+            <p>This project explores <strong>gradient-domain processing</strong>, a versatile and impactful technique in image processing with applications in blending, tone mapping, and non-photorealistic rendering (NPR). The core of this project focuses on implementing <strong>Poisson blending</strong>, a method for seamlessly integrating an object or texture from a source image into a target image.</p>
+
+            <h2>Part 1: Toy Problem</h2>
+            <p>First, let's begin with a simple toy example. In this example, I'll calculate the \(x\) and \(y\) gradients of an image \(s\) and then reconstruct an image \(v\) using these gradients along with the intensity of a single pixel as a reference.</p>
+            <p>Let \(s(x,y)\) represent the intensity of the source image at \((x, y)\) and \(v(x, y)\) represent the values of the reconstructed image to be solved. For each pixel, we aim to achieve the following objectives:</p>
+            <ol>
+                <li>
+                    <p>Minimize 
+                    \(
+                    \big(v(x+1, y) - v(x, y) - \big(s(x+1, y) - s(x, y)\big)\big)^2
+                    \)
+                    \( \Rightarrow \) the \(x\)-gradients of \(v\) should closely match the \(x\)-gradients of \(s\).</p>
+                </li>
+                <li>
+                    <p>Minimize 
+                    \(
+                    \big(v(x, y+1) - v(x, y) - \big(s(x, y+1) - s(x, y)\big)\big)^2
+                    \)
+                    \(\Rightarrow\) the \(y\)-gradients of \(v\) should closely match the \(y\)-gradients of \(s\).</p>
+                </li>
+                <li>
+                    <p>Minimize 
+                    \(
+                    \big(v(1,1) - s(1,1)\big)^2
+                    \)
+                    \(\Rightarrow\) the top left corners of two images should be the same color.</p>
+                </li>
+            </ol>
+
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/toy_problem.png" width="180">
+                    <figcaption>Original Image</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/toy_reconstruction.png" width="180">
+                    <figcaption>Reconstructed Result</figcaption>
+                </figure>
+            </figure>
+
+            <h2>Part 2: Possion Blending</h2>
+            <p>
+                We will now explore an application of gradient-domain processing called Poisson blending. The goal is to seamlessly integrate an object or texture from a source image into a target image. Unlike our previous approach, we will focus on the gradients of the images. The challenge is to find the pixel values for the target region that best preserve the gradient of the source image, while keeping the background pixels unchanged. This problem can be formulated as a least squares optimization.
+            </p>
+            <p>
+                Given the pixel intensities of the source image \(s\) and the target image \(t\), we aim to solve for the new intensity values \(v\) within the source region \(S\), which is defined by a mask. The objective is:
+                \[
+                    v = \underset{v}{\arg\min} \sum_{i \in S, j \in N_i \cap S} \left( (v_i - v_j) - (s_i - s_j) \right)^2 + \sum_{i \in S, j \in N_i \cap \neg S} \left( (v_i - t_j) - (s_i - s_j) \right)^2
+                \]
+                Here, \(i\) represents a pixel in the source region \(S\), and \(j\) is one of the 4 neighboring pixels of \(i\) (left, right, up, or down). The first term ensures that the gradients inside the source region \(S\) are as close as possible to the gradients of the source image we are inserting. The least squares solver smooths any sharp edges at the boundary of the source region by spreading the gradient mismatch over the interior of \(S\). The second term ensures that the boundary of \(S\) is correctly blended with the target image, directly taking the intensity values from the target.
+            </p>
+            <p>
+                Here is an example:
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/penguin-chick.jpeg" height="220">
+                    <figcaption>Source Image</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/im2.JPG" height="220">
+                    <figcaption>Target Image</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/source.png" height=220">
+                    <figcaption>Raw Blend</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/blend1.png" height="220">
+                    <figcaption>Possion Blend</figcaption>
+                </figure>
+            </figure>
+            <p>
+                A few more decent results are shown below:
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/blend2.png" height="240">
+                    <figcaption>Penguin & Polar Bear</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/blend3.png" height="240">
+                    <figcaption>Fire Balloon in the Sky</figcaption>
+                </figure>
+            </figure>
+            <p>
+                We now show a failure case:
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/blend4.png" height="240">
+                </figure>
+            </figure>
+            <p>
+                Although the blending around the source image was successful, the original color of the source image was not preserved. This issue is likely due to the significant color difference between the source image and the target image. As a result, the colors were drastically altered, with the colorful fire balloon attempting to match the dark blue of the sky.
+            </p>
+
+            <h2>Bells & Whistles</h2>
+            <h3>Mixed Gradients</h3>
+            <p>
+                Follow the same steps as Poisson blending, but use the gradient in source or target with the larger magnitude as the guide, rather than the source gradient:
+                \[
+                v = \underset{v}{\arg\min} \sum_{i \in S, j \in N_i \cap S} \left( (v_i - v_j) - d_{ij} \right)^2 + \sum_{i \in S, j \in N_i \cap \neg S} \left( (v_i - t_j) - d_{ij} \right)^2
+                \]
+                Here \(d_{ij}\) is the value of the gradient from the source or the target image with larger magnitude.
+            </p>
+            <p>
+                In the example below, you could notice that mix gradients blending performs better as it blend the border of the source image with the target image, which makes it looks more natural.
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/blend1.png" height="420">
+                    <figcaption>Poisson Blending</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/mixed_blend1.png" height="420">
+                    <figcaption>Mix Gradients Blending</figcaption>
+                </figure>
+            </figure>
+            <p>
+                In addition, the source image becomes semi-transparent after mix gradients blending, so mix gradients blending might perform worse in some case, such as the target image is complex:
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/blend3.png" height="240">
+                    <figcaption>Poisson Blending</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/mixed_blend2.png" height="240">
+                    <figcaption>Mix Gradients Blending</figcaption>
+                </figure>
+            </figure>
+
+            <h3>Color2Gray</h3>
+            <p>
+                When converting a color image to grayscale, such as when printing to a laser printer, important contrast details can be lost, making the image harder to interpret.
+            </p>
+            <p>
+                To preserve the details, I utilized gradient-domain processing to create a grayscale image that retains both the intensity of the <code>rgb2gray</code> output and the contrast of the original RGB image. This approach is conceptually similar to tone-mapping, often used in converting HDR images for RGB displays.
+            </p>
+            <p>
+                By converting the image to HSV space, I analyzed the gradients in each channel, and then formulated the task as a mixed gradients problem. This method allowed me to preserve both the grayscale intensity and the contrast of the original image. The final grayscale image I produced was shown to maintain the contrast information while keeping the numbers easily readable.
+            </p>
+            <figure style="display: block; margin-left: auto; margin-right: auto;">
+                <figure>
+                    <img src="./media/colorBlindTest35.png" height="160">
+                    <figcaption>RGB Image</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/colorBlindTest35_gray.png" height="160">
+                    <figcaption>Gray Image (rgb2gray)</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/color2gray.png" height="160">
+                    <figcaption>Gray Image (color2gray)</figcaption>
+                </figure>
+                <figure>
+                    <img src="./media/color2gray_ratio.png" height="160">
+                    <figcaption>Gray Image (color2gray with ratio 5.0)</figcaption>
+                </figure>
+            </figure>
+            <p>
+                In addition, I noticed that I could make the result even clearer if I scale the grayscale intensity by some large ratio, e.g. I use 5.0 here.
+            </p>
+
+            <h2>Cool Stuff I Learnt</h2>
+            <p>
+                This project has been a lot of fun, especially the color2gray part! I really enjoyed the visualization process. Most importantly, it has deepened my understanding of blending and gradient-domain processing. I now have a better grasp of the relationships between different color spaces.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<style type='text/css'>
+    figure {
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+    }
+    figure img {
+        vertical-align: top;
+        margin: auto;
+    }
+    figcaption {
+        color: #A8A8A8;
+        font-size: 0.85em;
+    }
+    figure figcaption { margin-top: 0.5em; }
+    @media ( min-width: 500px ) {
+        #container { max-width: 850px !important; }
+    }
+</style>
